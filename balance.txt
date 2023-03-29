@@ -1,0 +1,48 @@
+Для балансировки сайта на Nginx с значением 5 необходимо использовать готовый модуль nchan. 
+
+Шаги:
+
+1. Установить nchan модуль командой:
+```
+sudo apt-get install nginx-module-nchan
+```
+
+2. Открыть конфигурационный файл сайта:
+```
+sudo nano /etc/nginx/sites-available/example.com
+```
+
+3. Добавить следующие строки в блок server:
+```
+location /stream {
+     nchan_longpoll_channel_id $arg_id;
+     nchan_longpoll_multipart_types *;
+     nchan_channel_group mygroup;
+     nchan_channel_id         mychannel;
+     nchan_subscribe;
+     proxy_pass http://backend;
+}
+
+upstream backend {
+     server 127.0.0.1:8080 weight=5;
+     server 127.0.0.1:8081 weight=5;
+     server 127.0.0.1:8082 weight=5;
+     server 127.0.0.1:8083 weight=5;
+     server 127.0.0.1:8084 weight=5;
+}
+```
+
+4. Объяснение указанных параметров:
+ - `nchan_longpoll_channel_id $arg_id;` - определяет идентификатор канала для клиента;
+ - `nchan_longpoll_multipart_types *;` - разрешает отправку событий в виде многочастных ответов;
+ - `nchan_channel_group mygroup;` - объединяет всех клиентов в одну группу (опционально);
+ - `nchan_channel_id mychannel;` - задает имя канала (опционально);
+ - `nchan_subscribe;` - добавляет подписанного клиента в канал;
+ - `proxy_pass http://backend;` - направляет запросы на сервера из группы upstream backend.
+
+5. Перезапустить Nginx:
+```
+sudo systemctl restart nginx
+```
+
+6. Балансировка сайта на Nginx с пятью серверами готова.

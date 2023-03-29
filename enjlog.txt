@@ -1,0 +1,13 @@
+Для этого нужно отредактировать файл конфигурации Nginx (/etc/nginx/nginx.conf) и добавить следующие строки в блок http:
+
+```
+access_log /root/log/nginx_access_log;
+```
+
+После этого нужно перезапустить Nginx для применения изменений:
+
+```
+sudo service nginx restart
+``` 
+
+Теперь логи с подключением Nginx будут сохраняться в файле /root/log/nginx_access_log.

@@ -1,0 +1,26 @@
+---
+- hosts: all
+  tasks:
+
+   - name: install nginx
+     apt: name=nginx update_cache=yes
+   - name: start  nginx
+     service: name=nginx state=restarted
+
+   - name: install docker.io
+     apt: name=docker update_cache=yes
+
+   - name: install docker-compose
+     apt: name=docker-compose update_cache=yes
+
+   - name: install vim 
+     apt: name=vim update_cache=yes
+
+   - name: install curl
+     apt: name=curl update_cache=yes
+
+   - name: install wget
+     apt: name=wget update_cache=yes
+
+   - name: install git 
+     apt: name=git update_cache=yes

@@ -1,0 +1,59 @@
+Для установки curl, vim, procs, wget и git на Linux Debian с помощью Ansible и коллекцией Galaxy необходимо выполнить следующие шаги:
+
+1. Установить Ansible:
+
+```
+$ sudo apt-get update
+$ sudo apt-get install ansible
+```
+
+2. Установить коллекцию Galaxy, содержащую необходимые модули:
+
+```
+$ ansible-galaxy collection install community.general
+```
+
+3. Создать плейбук Ansible:
+
+```
+$ nano playbook.yml
+```
+
+4. В плейбук добавить следующий код:
+
+```yaml
+- name: Установка пакетов
+  hosts: all
+  become: true
+  collections:
+    - community.general
+  tasks:
+    - name: Установка curl
+      apt:
+        name: curl
+        state: present
+    - name: Установка vim
+      apt:
+        name: vim
+        state: present
+    - name: Установка procs
+      apt:
+        name: procs
+        state: present
+    - name: Установка wget
+      apt:
+        name: wget
+        state: present
+    - name: Установка git
+      apt:
+        name: git
+        state: present
+```
+
+5. Запустить плейбук Ansible:
+
+```
+$ ansible-playbook playbook.yml
+```
+
+После выполнения плейбука на Linux Debian будут установлены необходимые пакеты curl, vim, procs, wget и git.
